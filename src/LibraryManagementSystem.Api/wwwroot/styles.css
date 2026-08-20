@@ -1,0 +1,393 @@
+/* ==========================================================================
+   Design tokens
+   Direction: a librarian's ledger / card-catalog desk.
+   Paper backgrounds, ink text, a single rubber-stamp red for actions
+   and due-date status — the one artifact everyone recognizes from a
+   real library circulation desk.
+   ========================================================================== */
+:root {
+  --paper: #F6F1E7;
+  --paper-card: #FFFDF8;
+  --ink: #232A25;
+  --ink-soft: #5B6058;
+  --rule: #D8CFBC;
+  --stamp: #B23A2E;
+  --stamp-ink: #8C2C22;
+  --shelf-green: #4B7A57;
+
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius: 10px;
+  --shadow-card: 0 1px 2px rgba(35, 42, 37, 0.06), 0 6px 16px rgba(35, 42, 37, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  background-image:
+    linear-gradient(var(--rule) 1px, transparent 1px);
+  background-size: 100% 32px;
+  background-attachment: local;
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ---------- Header ---------- */
+.ledger-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 28px clamp(20px, 5vw, 56px) 20px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.ledger-header__mark {
+  font-size: 28px;
+  color: var(--stamp);
+  line-height: 1;
+}
+
+.ledger-header__text h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(22px, 3vw, 30px);
+  letter-spacing: -0.01em;
+}
+
+.ledger-header__text p {
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ledger-header__stamp {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* ---------- Drawer tab navigation ---------- */
+.drawer-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 14px clamp(20px, 5vw, 56px) 0;
+  background: var(--paper);
+}
+
+.drawer-tab {
+  appearance: none;
+  border: 1px solid var(--rule);
+  border-bottom: none;
+  background: var(--paper-card);
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transform: translateY(2px);
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.drawer-tab:hover { color: var(--ink); }
+
+.drawer-tab.is-active {
+  color: var(--ink);
+  background: var(--paper-card);
+  border-color: var(--rule);
+  transform: translateY(0);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Content / panels ---------- */
+.content {
+  padding: 0 clamp(20px, 5vw, 56px) 64px;
+  border-top: 1px solid var(--rule);
+  margin-top: -1px;
+}
+
+.panel { display: none; padding-top: 28px; }
+.panel.is-active { display: block; }
+
+.layout-split {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .layout-split { grid-template-columns: 1fr; }
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--paper-card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.form-card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: sticky;
+  top: 20px;
+}
+
+.form-card h2 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 19px;
+}
+
+.form-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.form-card .hint {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.form-card input,
+.form-card select {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  padding: 9px 11px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.form-card input:focus-visible,
+.form-card select:focus-visible,
+.btn:focus-visible,
+.drawer-tab:focus-visible,
+.segmented__option:focus-visible {
+  outline: 2px solid var(--stamp);
+  outline-offset: 2px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.form-error {
+  margin: 0;
+  color: var(--stamp);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  appearance: none;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn--primary {
+  background: var(--stamp);
+  color: #fff;
+  flex: 1;
+}
+.btn--primary:hover { background: var(--stamp-ink); }
+
+.btn--ghost {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+}
+.btn--ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+.btn--link {
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+.btn--link:hover { color: var(--stamp); }
+.btn--link.danger:hover { color: var(--stamp-ink); }
+
+/* ---------- Tables ---------- */
+.table-card { overflow-x: auto; padding: 4px 0; }
+
+.table-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 18px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid var(--rule);
+}
+
+tbody td {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(178, 58, 46, 0.035); }
+
+.empty-row {
+  text-align: center;
+  color: var(--ink-soft);
+  padding: 32px 18px;
+  font-style: italic;
+}
+
+.mono { font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); }
+
+.row-actions { display: flex; gap: 4px; justify-content: flex-end; white-space: nowrap; }
+
+.copies-pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+}
+.copies-pill.is-available { color: var(--shelf-green); border-color: var(--shelf-green); }
+.copies-pill.is-empty { color: var(--stamp); border-color: var(--stamp); }
+
+/* ---------- Segmented control (loan filter) ---------- */
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.segmented__option {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.segmented__option.is-active { background: var(--ink); color: var(--paper-card); }
+
+/* ---------- Signature element: the due-date stamp ---------- */
+.stamp-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  transform: rotate(-3deg);
+  color: var(--stamp);
+}
+
+.stamp-badge.is-returned {
+  color: var(--shelf-green);
+  transform: rotate(-2deg);
+}
+
+.stamp-badge.is-overdue {
+  color: var(--stamp-ink);
+  background: rgba(178, 58, 46, 0.08);
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translate(-50%, 12px);
+  background: var(--ink);
+  color: var(--paper-card);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-card);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 20;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast.is-error { background: var(--stamp-ink); }

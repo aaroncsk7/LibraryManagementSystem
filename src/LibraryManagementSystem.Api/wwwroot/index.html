@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Library Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="ledger-header">
+  <div class="ledger-header__mark" aria-hidden="true">&#9776;</div>
+  <div class="ledger-header__text">
+    <h1>Library Management System</h1>
+    <p>Catalog &middot; Members &middot; Loans</p>
+  </div>
+  <div class="ledger-header__stamp" id="clock" aria-hidden="true"></div>
+</header>
+
+<nav class="drawer-tabs" role="tablist" aria-label="Sections">
+  <button class="drawer-tab is-active" data-panel="books" role="tab" aria-selected="true">Books</button>
+  <button class="drawer-tab" data-panel="members" role="tab" aria-selected="false">Members</button>
+  <button class="drawer-tab" data-panel="loans" role="tab" aria-selected="false">Loans</button>
+</nav>
+
+<main class="content">
+
+  <!-- BOOKS -->
+  <section class="panel is-active" id="panel-books" role="tabpanel">
+    <div class="layout-split">
+      <form class="card form-card" id="book-form">
+        <h2 id="book-form-title">Add a book</h2>
+        <input type="hidden" id="book-id" />
+
+        <label>Title
+          <input type="text" id="book-title" required maxlength="200" />
+        </label>
+        <label>Author
+          <input type="text" id="book-author" required maxlength="150" />
+        </label>
+        <label>ISBN
+          <input type="text" id="book-isbn" required maxlength="20" />
+        </label>
+        <label>Genre
+          <input type="text" id="book-genre" maxlength="80" />
+        </label>
+        <div class="field-row">
+          <label>Year
+            <input type="number" id="book-year" min="0" max="3000" required />
+          </label>
+          <label>Copies
+            <input type="number" id="book-copies" min="0" max="10000" required />
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" id="book-submit">Add book</button>
+          <button type="button" class="btn btn--ghost" id="book-cancel" hidden>Cancel</button>
+        </div>
+        <p class="form-error" id="book-error" hidden></p>
+      </form>
+
+      <div class="card table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>ISBN</th>
+              <th>Genre</th>
+              <th>Year</th>
+              <th>Available</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="books-table-body">
+            <tr><td colspan="7" class="empty-row">Loading catalog&hellip;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERS -->
+  <section class="panel" id="panel-members" role="tabpanel">
+    <div class="layout-split">
+      <form class="card form-card" id="member-form">
+        <h2 id="member-form-title">Add a member</h2>
+        <input type="hidden" id="member-id" />
+
+        <label>Full name
+          <input type="text" id="member-name" required maxlength="120" />
+        </label>
+        <label>Email
+          <input type="email" id="member-email" required maxlength="150" />
+        </label>
+        <label>Phone
+          <input type="text" id="member-phone" maxlength="30" />
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" id="member-submit">Add member</button>
+          <button type="button" class="btn btn--ghost" id="member-cancel" hidden>Cancel</button>
+        </div>
+        <p class="form-error" id="member-error" hidden></p>
+      </form>
+
+      <div class="card table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Joined</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="members-table-body">
+            <tr><td colspan="5" class="empty-row">Loading members&hellip;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOANS -->
+  <section class="panel" id="panel-loans" role="tabpanel">
+    <div class="layout-split">
+      <form class="card form-card" id="loan-form">
+        <h2>Check out a book</h2>
+
+        <label>Book
+          <select id="loan-book" required></select>
+        </label>
+        <label>Member
+          <select id="loan-member" required></select>
+        </label>
+        <label>Due date <span class="hint">(optional &mdash; defaults to 14 days)</span>
+          <input type="date" id="loan-due" />
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Check out</button>
+        </div>
+        <p class="form-error" id="loan-error" hidden></p>
+      </form>
+
+      <div class="card table-card">
+        <div class="table-toolbar">
+          <div class="segmented" role="group" aria-label="Filter loans">
+            <button class="segmented__option is-active" data-filter="active">Active</button>
+            <button class="segmented__option" data-filter="all">All</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Book</th>
+              <th>Member</th>
+              <th>Borrowed</th>
+              <th>Due</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="loans-table-body">
+            <tr><td colspan="6" class="empty-row">Loading loans&hellip;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>
