@@ -16,8 +16,8 @@ dotnet --version
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/<your-username>/<your-repo-name>.git
-cd <your-repo-name>
+git clone https://github.com/aaroncsk7/LibraryManagementSystem.git
+cd LibraryManagementSystem
 
 # 2. Restore & run
 dotnet restore
